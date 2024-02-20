@@ -22,7 +22,35 @@ module.exports = {
             });
         });
     },
+    inserir: (modelo, placa) => {
+        return new Promise((accept, reject) => {
 
-    
+            db.query('INSERT INTO carros (modelo, placa) VALUES (?, ?)', [modelo, placa], (err, result) => {
+                if (err) { reject(err); return; }
+                accept(result.insertCodigo);
+            });
+        });
+    },
+
+    alterar: (codigo, modelo, placa) => {
+        return new Promise((accept, reject) => {
+            db.query('UPDATE carros SET modelo = ?, placa = ? WHERE codigo = ?',
+                [modelo, placa, codigo],
+                (err, result) => {
+                    if (err) { reject(err); return; }
+                    accept(result);
+                }
+            );
+        });
+    },
+
+    excluir: (codigo)=> {
+        return new Promise((aceito, rejeitado)=> {
+            db.query('DELETE FROM carros WHERE codigo = ?',[codigo], (error, results ) =>{
+                if(error){ rejeitado(error); return; }
+                aceito(results);
+            });
+        });
+    }
 
 };
